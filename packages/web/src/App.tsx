@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { type ReactNode } from 'react';
-import { useAuth, type AuthContextValue } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { SidebarLayout } from '@/components/SidebarLayout';
 import Login from '@/pages/Login';
 import Dashboard from '@/pages/Dashboard';
@@ -45,9 +45,9 @@ function Protected({ children, minRole = 'user' }: { children: ReactNode; minRol
   return <>{children}</>;
 }
 
-function Layout({ children }: { children: ReactNode }) {
+function Layout({ children, minRole }: { children: ReactNode; minRole?: UserRole }) {
   return (
-    <Protected>
+    <Protected minRole={minRole}>
       <SidebarLayout>{children}</SidebarLayout>
     </Protected>
   );
