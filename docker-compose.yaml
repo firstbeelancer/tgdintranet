@@ -59,21 +59,8 @@ services:
       COOLIFY_URL: https://${DOMAIN:-intranet.tigerapps.pro}
       COOLIFY_FQDN: ${DOMAIN:-intranet.tigerapps.pro}
       SERVICE_NAME_API: api
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3001/api/v1/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
     networks:
       - tgdintranet
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.tgdintranet-api.rule=Host(`api.${DOMAIN}`)"
-      - "traefik.http.routers.tgdintranet-api.entrypoints=https"
-      - "traefik.http.routers.tgdintranet-api.tls.certresolver=letsencrypt"
-      - "traefik.http.services.tgdintranet-api.loadbalancer.server.port=3001"
-
   web:
     build:
       context: .
@@ -88,11 +75,6 @@ services:
     networks:
       - tgdintranet
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.tgdintranet-web.rule=Host(`${DOMAIN}`)"
-      - "traefik.http.routers.tgdintranet-web.entrypoints=https"
-      - "traefik.http.routers.tgdintranet-web.tls.certresolver=letsencrypt"
-      - "traefik.http.services.tgdintranet-web.loadbalancer.server.port=80"
 
 networks:
   tgdintranet:
