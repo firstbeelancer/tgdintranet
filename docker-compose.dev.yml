@@ -1,0 +1,72 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: tgdintranet-db-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tgdintranet
+      POSTGRES_PASSWORD: devpass
+      POSTGRES_DB: tgdintranet
+    ports:
+      - "5433:5432"
+    volumes:
+      - tgdintranet_pgdata_dev:/var/lib/postgresql/data
+    networks:
+      - tgdintranet
+
+  api:
+    build:
+      context: .
+      dockerfile: packages/api/Dockerfile
+    container_name: tgdintranet-api-dev
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: postgresql://tgdintranet:devpass@db:5432/tgdintranet
+      JWT_SECRET: dev-secret-do-not-use-in-prod-must-be-long-enough
+      ENCRYPTION_KEY: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b
+      DOMAIN: localhost
+      CORS_ORIGIN: http://localhost:5173
+      SEED_ADMIN_EMAIL: admin@intranet.local
+      SEED_ADMIN_PASSWORD: Admin2026!Demo
+      SEED_MARKETER_EMAIL: marketer@intranet.local
+      SEED_MARKETER_PASSWORD: Marketer2026!Demo
+      SEED_USER_EMAIL: user@intranet.local
+      SEED_USER_PASSWORD: User2026!Demo
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./packages/api/src:/app/src
+    networks:
+      - tgdintranet
+
+  web:
+    image: node:22-alpine
+    container_name: tgdintranet-web-dev
+    working_dir: /app
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      VITE_API_URL: http://localhost:3001/api
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./packages/web:/app
+      - /app/node_modules
+    networks:
+      - tgdintranet
+
+networks:
+  tgdintranet:
+    name: tgdintranet-dev
+
+volumes:
+  tgdintranet_pgdata_dev:
+    name: tgdintranet_pgdata_dev

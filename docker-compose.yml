@@ -1,0 +1,104 @@
+version: "3.8"
+
+# ==========================================
+# tgdintranet — Production Docker Compose
+# Designed for Coolify deployment
+# ==========================================
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: tgdintranet-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-tgdintranet}
+      POSTGRES_PASSWORD: ${DB_PASS:?DB_PASS required}
+      POSTGRES_DB: ${DB_NAME:-tgdintranet}
+    volumes:
+      - tgdintranet_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-tgdintranet}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - tgdintranet
+    # Coolify: internal service, no public port
+
+  api:
+    build:
+      context: .
+      dockerfile: packages/api/Dockerfile
+      args:
+        CACHEBUST: ${CACHEBUST:-1}
+    container_name: tgdintranet-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://${DB_USER:-tgdintranet}:${DB_PASS}@db:5432/${DB_NAME:-tgdintranet}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET required}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:?ENCRYPTION_KEY required}
+      DOMAIN: ${DOMAIN}
+      CORS_ORIGIN: ${CORS_ORIGIN:-https://${DOMAIN}}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@intranet.local}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-Admin2026!Demo}
+      SEED_MARKETER_EMAIL: ${SEED_MARKETER_EMAIL:-marketer@intranet.local}
+      SEED_MARKETER_PASSWORD: ${SEED_MARKETER_PASSWORD:-Marketer2026!Demo}
+      SEED_USER_EMAIL: ${SEED_USER_EMAIL:-user@intranet.local}
+      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD:-User2026!Demo}
+      COOLIFY_BRANCH: "main"
+      COOLIFY_RESOURCE_UUID: ${COOLIFY_RESOURCE_UUID:-tgdintranet}
+      COOLIFY_CONTAINER_NAME: tgdintranet-api
+      SERVICE_FQDN_API: api.${DOMAIN:-intranet.tigerapps.pro}
+      SERVICE_URL_API: https://api.${DOMAIN:-intranet.tigerapps.pro}
+      COOLIFY_URL: https://${DOMAIN:-intranet.tigerapps.pro}
+      COOLIFY_FQDN: ${DOMAIN:-intranet.tigerapps.pro}
+      SERVICE_NAME_API: api
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - tgdintranet
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tgdintranet-api.rule=Host(`api.${DOMAIN}`)"
+      - "traefik.http.routers.tgdintranet-api.entrypoints=https"
+      - "traefik.http.routers.tgdintranet-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tgdintranet-api.loadbalancer.server.port=3001"
+
+  web:
+    build:
+      context: .
+      dockerfile: packages/web/Dockerfile
+      args:
+        CACHEBUST: ${CACHEBUST:-1}
+        VITE_API_URL: ${VITE_API_URL:-/api}
+    container_name: tgdintranet-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    networks:
+      - tgdintranet
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tgdintranet-web.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.tgdintranet-web.entrypoints=https"
+      - "traefik.http.routers.tgdintranet-web.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tgdintranet-web.loadbalancer.server.port=80"
+
+networks:
+  tgdintranet:
+    name: tgdintranet
+    driver: bridge
+
+volumes:
+  tgdintranet_pgdata:
+    name: tgdintranet_pgdata
