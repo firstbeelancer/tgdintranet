@@ -1,0 +1,374 @@
+@font-face {
+  font-family: 'Involve';
+  src: url('/fonts/Involve-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Involve';
+  src: url('/fonts/Involve-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Involve';
+  src: url('/fonts/Involve-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Involve';
+  src: url('/fonts/Involve-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   TEHNOGID DESIGN SYSTEM — Neumorphic Corporate UI
+   Palette tokens (HSL):
+   --quantum   #111B41   222 59% 16%
+   --obsidian  #122341   222 56% 17%
+   --ocean     #024681   208 98% 26%
+   --titan     #035094   209 96% 30%
+   --sky       #577ABE   217 41% 54%
+   --ether     #869FD0   218 44% 67%
+   --neptune   #06B6D4   188 95% 43%
+   --lazurite  #B7D9FF   213 100% 86%
+   --cloud     #EAF4FF   210 100% 96%
+   --mist      #F4F8FF   216 100% 98%
+   --frost     #F3F3F3   0 0% 95%
+   --haze      #DDE3ED   220 25% 90%
+   --andesite  #DCDCDC   0 0% 86%
+   --diorite   #BDBDBD   0 0% 74%
+   --slate     #8D8D8D   0 0% 55%
+   --graphite  #49525D   213 13% 33%
+   --basalt    #3E4750   210 13% 28%
+   --amber     #F59C1B   34 92% 53%
+   --citrine   #FFC000   45 100% 50%
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* TehnoGid brand tokens */
+    --quantum: 222 59% 16%;
+    --obsidian: 222 56% 17%;
+    --ocean: 208 98% 26%;
+    --titan: 209 96% 30%;
+    --sky: 217 41% 54%;
+    --ether: 218 44% 67%;
+    --neptune: 188 95% 43%;
+    --lazurite: 213 100% 86%;
+    --cloud: 210 100% 96%;
+    --mist: 216 100% 98%;
+    --frost: 0 0% 95%;
+    --haze: 220 25% 90%;
+    --andesite: 0 0% 86%;
+    --diorite: 0 0% 74%;
+    --slate-tg: 0 0% 55%;
+    --graphite: 213 13% 33%;
+    --basalt: 210 13% 28%;
+    --amber: 34 92% 53%;
+    --citrine: 45 100% 50%;
+
+    /* Neumorphism shadows (light theme) */
+    --neu-bg: 216 100% 98%;          /* mist */
+    --neu-light: 0 0% 100%;          /* highlight */
+    --neu-dark: 218 35% 80%;         /* lowlight */
+    --sky-glow: 217 41% 54%;
+
+    /* Semantic mappings */
+    --background: 216 100% 98%;
+    --foreground: 213 13% 33%;       /* graphite */
+
+    --card: 216 100% 98%;
+    --card-foreground: 213 13% 33%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 209 96% 30%;
+
+    --primary: 217 41% 54%;          /* sky — CTA */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 100% 96%;       /* cloud */
+    --secondary-foreground: 209 96% 30%;
+
+    --muted: 220 25% 94%;
+    --muted-foreground: 0 0% 55%;
+
+    --accent: 188 95% 43%;           /* neptune */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 25% 90%;
+    --input: 220 25% 90%;
+    --ring: 217 41% 54%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 216 100% 98%;
+    --sidebar-foreground: 213 13% 33%;
+    --sidebar-primary: 217 41% 54%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 100% 96%;
+    --sidebar-accent-foreground: 209 96% 30%;
+    --sidebar-border: 220 25% 90%;
+    --sidebar-ring: 217 41% 54%;
+
+    /* Heading colors per spec */
+    --heading: 209 96% 30%;          /* titan */
+    --heading-accent: 188 95% 43%;   /* neptune */
+  }
+
+  .dark {
+    --background: 222 56% 11%;
+    --foreground: 210 100% 96%;
+    --card: 222 56% 14%;
+    --card-foreground: 210 100% 96%;
+    --popover: 222 56% 14%;
+    --popover-foreground: 210 100% 96%;
+    --primary: 217 55% 65%;
+    --primary-foreground: 222 59% 12%;
+    --secondary: 222 40% 20%;
+    --secondary-foreground: 210 100% 96%;
+    --muted: 222 30% 18%;
+    --muted-foreground: 218 25% 70%;
+    --accent: 188 90% 55%;
+    --accent-foreground: 222 59% 12%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 30% 22%;
+    --input: 222 30% 22%;
+    --ring: 217 55% 65%;
+    --sidebar-background: 222 56% 11%;
+    --sidebar-foreground: 210 100% 96%;
+    --sidebar-primary: 217 55% 65%;
+    --sidebar-primary-foreground: 222 59% 12%;
+    --sidebar-accent: 222 40% 18%;
+    --sidebar-accent-foreground: 210 100% 96%;
+    --sidebar-border: 222 30% 22%;
+    --sidebar-ring: 217 55% 65%;
+
+    --neu-bg: 222 56% 11%;
+    --neu-light: 222 40% 18%;
+    --neu-dark: 222 70% 5%;
+    --heading: 210 100% 96%;
+    --heading-accent: 188 90% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Involve', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Involve', sans-serif;
+    color: hsl(var(--heading));
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .heading-accent {
+    color: hsl(var(--heading-accent));
+  }
+}
+
+@layer components {
+  /* === Welcome / hero gradient (titan → ocean) === */
+  .welcome-gradient {
+    background: linear-gradient(135deg, hsl(var(--titan)) 0%, hsl(var(--ocean)) 60%, hsl(var(--obsidian)) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .welcome-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 40%, hsla(188, 95%, 43%, 0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 60%, hsla(217, 41%, 54%, 0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* === Glass panel (used on hero) === */
+  .glass-panel {
+    background: hsla(0, 0%, 100%, 0.10);
+    backdrop-filter: blur(24px) saturate(1.6);
+    border: 1px solid hsla(0, 0%, 100%, 0.18);
+    box-shadow:
+      0 8px 32px hsla(0, 0%, 0%, 0.18),
+      inset 0 1px 0 hsla(0, 0%, 100%, 0.22);
+  }
+
+  /* === Neumorphic card (raised) === */
+  .neu-card {
+    background: hsl(var(--neu-bg));
+    border-radius: var(--radius);
+    box-shadow:
+      10px 10px 24px hsla(var(--neu-dark) / 0.55),
+      -10px -10px 24px hsl(var(--neu-light));
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .neu-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      14px 14px 32px hsla(var(--neu-dark) / 0.65),
+      -14px -14px 32px hsl(var(--neu-light));
+  }
+
+  /* === Neumorphic inset (pressed) === */
+  .neu-inset {
+    background: hsl(var(--neu-bg));
+    border-radius: var(--radius);
+    box-shadow:
+      inset 6px 6px 12px hsla(var(--neu-dark) / 0.55),
+      inset -6px -6px 12px hsl(var(--neu-light));
+  }
+
+  /* === Neumorphic icon container === */
+  .neu-icon {
+    background: hsl(var(--neu-bg));
+    border-radius: 14px;
+    box-shadow:
+      4px 4px 8px hsla(var(--neu-dark) / 0.55),
+      -4px -4px 8px hsl(var(--neu-light));
+    color: hsl(var(--sky));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* === Primary CTA with glow === */
+  .btn-glow {
+    background: hsl(var(--sky));
+    color: #fff;
+    border-radius: 14px;
+    font-weight: 600;
+    box-shadow:
+      0 0 16px hsla(var(--sky-glow) / 0.35),
+      0 4px 12px hsla(var(--sky-glow) / 0.25);
+    transition: all 0.3s ease;
+  }
+  .btn-glow:hover {
+    box-shadow:
+      0 0 28px hsla(var(--sky-glow) / 0.55),
+      0 6px 16px hsla(var(--sky-glow) / 0.35);
+    transform: translateY(-2px);
+  }
+  .btn-glow:active {
+    transform: translateY(0);
+  }
+
+  /* === Tag === */
+  .tg-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: hsl(var(--sky));
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.8rem;
+    box-shadow:
+      3px 3px 6px hsla(var(--neu-dark) / 0.5),
+      -3px -3px 6px hsl(var(--neu-light));
+  }
+  .tg-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 6px hsla(0, 0%, 100%, 0.6);
+  }
+
+  /* === Blue section (full-width dark) === */
+  .section-blue {
+    background: hsl(var(--titan));
+    color: #fff;
+  }
+  .section-blue h1, .section-blue h2, .section-blue h3 { color: #fff; }
+  .surface-blue {
+    background: hsl(var(--ocean));
+    border-radius: 24px;
+    color: #fff;
+    box-shadow:
+      18px 18px 36px hsl(208 98% 18%),
+      -18px -18px 36px hsl(208 98% 36%);
+  }
+
+  /* Mesh background */
+  .mesh-bg {
+    background-image:
+      radial-gradient(at 40% 20%, hsla(217, 41%, 54%, 0.06) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsla(188, 95%, 43%, 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsla(209, 96%, 30%, 0.04) 0px, transparent 50%);
+  }
+
+  /* Solid heading utilities (no gradients on text per spec) */
+  .text-heading { color: hsl(var(--heading)); }
+  .text-heading-accent { color: hsl(var(--heading-accent)); }
+
+  /* === Legacy aliases — map old classes onto Neumorphism === */
+  .card-modern {
+    background: hsl(var(--neu-bg));
+    border-radius: var(--radius);
+    box-shadow:
+      10px 10px 24px hsla(var(--neu-dark) / 0.55),
+      -10px -10px 24px hsl(var(--neu-light));
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    border: none;
+  }
+  .card-modern:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      14px 14px 32px hsla(var(--neu-dark) / 0.65),
+      -14px -14px 32px hsl(var(--neu-light));
+  }
+  .icon-wrapper {
+    background: hsl(var(--neu-bg));
+    border-radius: 14px;
+    box-shadow:
+      4px 4px 8px hsla(var(--neu-dark) / 0.55),
+      -4px -4px 8px hsl(var(--neu-light));
+  }
+  .shadow-card, .shadow-card-hover { box-shadow: none; }
+}
+
+@layer utilities {
+  .shadow-neu {
+    box-shadow:
+      10px 10px 24px hsla(var(--neu-dark) / 0.55),
+      -10px -10px 24px hsl(var(--neu-light));
+  }
+  .shadow-neu-sm {
+    box-shadow:
+      5px 5px 10px hsla(var(--neu-dark) / 0.5),
+      -5px -5px 10px hsl(var(--neu-light));
+  }
+  .shadow-neu-inset {
+    box-shadow:
+      inset 6px 6px 12px hsla(var(--neu-dark) / 0.55),
+      inset -6px -6px 12px hsl(var(--neu-light));
+  }
+  .shadow-glow-sky {
+    box-shadow:
+      0 0 16px hsla(var(--sky-glow) / 0.35),
+      0 4px 12px hsla(var(--sky-glow) / 0.25);
+  }
+}
+
+html { scroll-behavior: smooth; }

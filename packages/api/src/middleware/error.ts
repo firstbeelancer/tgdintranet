@@ -11,13 +11,9 @@ export function notFoundHandler(req: Request, res: Response) {
   res.status(404).json({ error: 'not_found', message: `Route ${req.method} ${req.path} not found` });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function errorHandler(err: unknown, req: Request, res: Response, _next: NextFunction) {
   if (err instanceof ZodError) {
-    return res.status(400).json({
-      error: 'validation_error',
-      issues: err.flatten().fieldErrors,
-    });
+    return res.status(400).json({ error: 'validation_error', issues: err.flatten().fieldErrors });
   }
   if (err instanceof HttpError) {
     return res.status(err.status).json({ error: err.code, message: err.message });

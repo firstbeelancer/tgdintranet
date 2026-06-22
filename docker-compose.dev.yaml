@@ -14,12 +14,12 @@ services:
     volumes:
       - tgdintranet_pgdata_dev:/var/lib/postgresql/data
     networks:
-      - tgdintranet
+      - tgdintranet-dev
 
   api:
     build:
-      context: .
-      dockerfile: packages/api/Dockerfile
+      context: ./packages/api
+      dockerfile: Dockerfile
     container_name: tgdintranet-api-dev
     restart: unless-stopped
     depends_on:
@@ -31,19 +31,13 @@ services:
       JWT_SECRET: dev-secret-do-not-use-in-prod-must-be-long-enough
       ENCRYPTION_KEY: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b
       DOMAIN: localhost
-      CORS_ORIGIN: http://localhost:5173
-      SEED_ADMIN_EMAIL: admin@intranet.local
-      SEED_ADMIN_PASSWORD: Admin2026!Demo
-      SEED_MARKETER_EMAIL: marketer@intranet.local
-      SEED_MARKETER_PASSWORD: Marketer2026!Demo
-      SEED_USER_EMAIL: user@intranet.local
-      SEED_USER_PASSWORD: User2026!Demo
+      CORS_ORIGIN: http://localhost:8080
     ports:
       - "3001:3001"
     volumes:
       - ./packages/api/src:/app/src
     networks:
-      - tgdintranet
+      - tgdintranet-dev
 
   web:
     image: node:22-alpine
@@ -53,18 +47,18 @@ services:
     depends_on:
       - api
     environment:
-      VITE_API_URL: http://localhost:3001/api
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+      VITE_API_PREFIX: /api
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 8080"
     ports:
-      - "5173:5173"
+      - "8080:8080"
     volumes:
-      - ./packages/web:/app
+      - .:/app
       - /app/node_modules
     networks:
-      - tgdintranet
+      - tgdintranet-dev
 
 networks:
-  tgdintranet:
+  tgdintranet-dev:
     name: tgdintranet-dev
 
 volumes:

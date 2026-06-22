@@ -9,12 +9,6 @@ const envSchema = z.object({
   ENCRYPTION_KEY: z.string().min(64, 'ENCRYPTION_KEY must be 64 hex characters'),
   DOMAIN: z.string().default('localhost'),
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
-  SEED_ADMIN_EMAIL: z.string().email().default('admin@intranet.local'),
-  SEED_ADMIN_PASSWORD: z.string().min(8).default('Admin2026!Demo'),
-  SEED_MARKETER_EMAIL: z.string().email().default('marketer@intranet.local'),
-  SEED_MARKETER_PASSWORD: z.string().min(8).default('Marketer2026!Demo'),
-  SEED_USER_EMAIL: z.string().email().default('user@intranet.local'),
-  SEED_USER_PASSWORD: z.string().min(8).default('User2026!Demo'),
 });
 
 export type Env = z.infer<typeof envSchema>;

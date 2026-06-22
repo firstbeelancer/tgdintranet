@@ -24,12 +24,11 @@ services:
       start_period: 30s
     networks:
       - tgdintranet
-    # Coolify: internal service, no public port
 
   api:
     build:
-      context: .
-      dockerfile: packages/api/Dockerfile
+      context: ./packages/api
+      dockerfile: Dockerfile
       args:
         CACHEBUST: ${CACHEBUST:-1}
     container_name: tgdintranet-api
@@ -45,12 +44,6 @@ services:
       ENCRYPTION_KEY: ${ENCRYPTION_KEY:?ENCRYPTION_KEY required}
       DOMAIN: ${DOMAIN}
       CORS_ORIGIN: ${CORS_ORIGIN:-https://${DOMAIN}}
-      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@intranet.local}
-      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-Admin2026!Demo}
-      SEED_MARKETER_EMAIL: ${SEED_MARKETER_EMAIL:-marketer@intranet.local}
-      SEED_MARKETER_PASSWORD: ${SEED_MARKETER_PASSWORD:-Marketer2026!Demo}
-      SEED_USER_EMAIL: ${SEED_USER_EMAIL:-user@intranet.local}
-      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD:-User2026!Demo}
       COOLIFY_BRANCH: "main"
       COOLIFY_RESOURCE_UUID: ${COOLIFY_RESOURCE_UUID:-tgdintranet}
       COOLIFY_CONTAINER_NAME: tgdintranet-api
@@ -61,20 +54,20 @@ services:
       SERVICE_NAME_API: api
     networks:
       - tgdintranet
+
   web:
     build:
       context: .
-      dockerfile: packages/web/Dockerfile
+      dockerfile: Dockerfile
       args:
         CACHEBUST: ${CACHEBUST:-1}
-        VITE_API_URL: ${VITE_API_URL:-/api}
+        VITE_API_PREFIX: ${VITE_API_PREFIX:-/api}
     container_name: tgdintranet-web
     restart: unless-stopped
     depends_on:
       - api
     networks:
       - tgdintranet
-    labels:
 
 networks:
   tgdintranet:

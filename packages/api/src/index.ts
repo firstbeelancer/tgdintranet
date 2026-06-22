@@ -9,6 +9,13 @@ import servicesRoutes from './modules/services/routes.js';
 import employeesRoutes from './modules/employees/routes.js';
 import formsRoutes from './modules/forms/routes.js';
 import pagesRoutes from './modules/pages/routes.js';
+import profilesRoutes from './modules/profiles/routes.js';
+import userRolesRoutes from './modules/userRoles/routes.js';
+import partnerCertificatesRoutes from './modules/partnerCertificates/routes.js';
+import successCasesRoutes from './modules/successCases/routes.js';
+import mascotModule, { optionsRouter } from './modules/mascotVotes/routes.js';
+import createUserEdgeFn from './modules/functions/create-user.js';
+import storageRoutes from './modules/storage/routes.js';
 
 const env = getEnv();
 const app = express();
@@ -19,19 +26,14 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: '10mb' }));
 
 // Health
 app.get('/api/v1/health', (_req, res) => {
-  res.json({
-    status: 'ok',
-    service: 'tgdintranet-api',
-    env: env.NODE_ENV,
-    timestamp: new Date().toISOString(),
-  });
+  res.json({ status: 'ok', service: 'tgdintranet-api', env: env.NODE_ENV, timestamp: new Date().toISOString() });
 });
 
-// Routes
+// API v1 — REST
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', usersRoutes);
 app.use('/api/v1/announcements', announcementsRoutes);
@@ -39,14 +41,21 @@ app.use('/api/v1/services', servicesRoutes);
 app.use('/api/v1/employees', employeesRoutes);
 app.use('/api/v1/forms', formsRoutes);
 app.use('/api/v1/pages', pagesRoutes);
+app.use('/api/v1/profiles', profilesRoutes);
+app.use('/api/v1/user_roles', userRolesRoutes);
+app.use('/api/v1/partner_certificates', partnerCertificatesRoutes);
+app.use('/api/v1/success_cases', successCasesRoutes);
+app.use('/api/v1/mascot_votes', mascotModule);
+app.use('/api/v1/mascot_options', optionsRouter);
 
-// Root endpoint
+// Edge function replacement (Supabase-style)
+app.use('/api/functions', createUserEdgeFn);
+
+// Storage replacement (Supabase-style)
+app.use('/api/storage', storageRoutes);
+
 app.get('/', (_req, res) => {
-  res.json({
-    service: 'tgdintranet-api',
-    docs: '/api/v1/health',
-    auth: '/api/v1/auth/login',
-  });
+  res.json({ service: 'tgdintranet-api', health: '/api/v1/health' });
 });
 
 app.use(notFoundHandler);
