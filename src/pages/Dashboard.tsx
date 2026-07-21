@@ -28,12 +28,15 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
+import { DataParticles } from "@/components/DataParticles";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { role } = useAuth();
   return (
-    <div className="min-h-screen bg-background mesh-bg">
+    <div className="relative min-h-screen bg-background mesh-bg">
+      <DataParticles variant="light" />
+      <div className="relative z-10">
       <IntranetHeader />
       <div className="max-w-[1280px] mx-auto px-6 py-10">
         <motion.div
@@ -219,6 +222,7 @@ const Dashboard = () => {
             </DashboardCard>
           )}
         </div>
+      </div>
       </div>
     </div>
   );
